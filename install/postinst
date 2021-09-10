@@ -11,8 +11,8 @@ fi
 
 if [[ "$1" = "configure" ]]
 then
-  mkdir -p /etc/icanhazip
+  mkdir -p /etc/icanhazuuid
 
-  systemctl enable icanhazip
+  systemctl enable icanhazuuid
   systemctl daemon-reload
 fi
