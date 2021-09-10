@@ -20,8 +20,8 @@ func main() {
 
 	listenIP := flag.String("ip", "", "https listen ip")
 	listenPort := flag.Uint("port", 443, "https listen port")
-	certOpt := flag.String("cert", "./test/cert.pem", "TLS Certificate")
-	keyOpt := flag.String("key", "./test/key.pem", "TLS Key")
+	certOpt := flag.String("cert", "/etc/icanhazuuid/cert.pem", "TLS Certificate")
+	keyOpt := flag.String("key", "/etc/icanhazuuid/key.pem", "TLS Key")
 	timeoutSecondsOpt := flag.Uint("timeout", 30, "Web server timeout in seconds")
 	logVerboseOpt := flag.Bool("v", false, "Verbose logging")
 	versionOpt := flag.Bool("version", false, "Show version and exit")
