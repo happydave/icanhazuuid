@@ -4,7 +4,10 @@
 openssl ecparam -name secp384r1 -genkey -out key.pem
 
 # Generate X509 CSR
-openssl req -new -key key.pem -nodes -out request.csr
+openssl req -new -key key.pem -nodes -out request.csr -subj "/CN=icanhazuuid.com" -addext "subjectAltName = DNS:icanhazuuid.com, DNS:www.icanhazuuid.com"
 
 # Self sign
 openssl x509 -req -days 365 -in request.csr -signkey key.pem -out cert.pem
+
+# Certbot sign (using standalone web server)
+certbot certonly -d icanhazuuid.com -d www.icanhazuuid.com --csr request.csr --agree-tos --standalone
