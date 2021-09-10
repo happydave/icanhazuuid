@@ -12,7 +12,7 @@ fi
 if [[ "$1" = "configure" ]]
 then
   mkdir -p /etc/icanhazuuid
-  chown -R notroot:notroot icanhazuuid
+  chown -R notroot:notroot /etc/icanhazuuid
 
   setcap 'cap_net_bind_service=+ep' /usr/bin/icanhazuuid
 
