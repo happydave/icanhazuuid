@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+# create notroot user if needed
+if [[ "$(getent passwd notroot)" == "" ]]
+then
+  useradd --no-create-home notroot
+  passwd -d notroot
+  passwd -l notroot
+fi
+
+if [[ "$1" = "configure" ]]
+then
+  mkdir -p /etc/icanhazip
+
+  systemctl enable icanhazip
+  systemctl daemon-reload
+fi

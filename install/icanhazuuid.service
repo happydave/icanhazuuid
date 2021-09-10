@@ -1,0 +1,17 @@
+# /etc/systemd/system/icanhazuuid.service
+
+[Unit]
+After=network.target
+Description=UUID generator
+
+[Service]
+ExecStart=/usr/bin/icanhazuuid
+Restart=always
+StandardOutput=syslog
+SyslogIdentifier=icanhazuuid
+WorkingDirectory=/etc/icanhazuuid
+User=notroot
+Group=notroot
+
+[Install]
+WantedBy=multi-user.target

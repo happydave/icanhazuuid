@@ -1,0 +1,10 @@
+
+# generate private key
+# openssl ecparam -name secp521r1 -genkey -out key.pem    # possible incompatibility with inferior browsers ;)
+openssl ecparam -name secp384r1 -genkey -out key.pem
+
+# Generate X509 CSR
+openssl req -new -key key.pem -nodes -out request.csr
+
+# Self sign
+openssl x509 -req -days 365 -in request.csr -signkey key.pem -out cert.pem
