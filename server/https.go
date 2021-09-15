@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -18,19 +19,23 @@ func Launch(config WebConfig) {
 	}
 
 	router := mux.NewRouter()
+	router.Path("/").Methods("GET").HandlerFunc(getUUID)
+	go http.ListenAndServe(":80", router)
+
+	tlsRouter := mux.NewRouter()
 
 	if verbose {
-		router.Use(logVerboseMiddleware)
+		tlsRouter.Use(logVerboseMiddleware)
 	}
 
-	router.Path("/").Methods("GET").HandlerFunc(getUUID)
-	router.Path("/stats").Methods("GET").HandlerFunc(getStats)
+	tlsRouter.Path("/").Methods("GET").HandlerFunc(getUUID)
+	tlsRouter.Path("/stats").Methods("GET").HandlerFunc(getStats)
 
 	tlsConfig.BuildNameToCertificate()
 
 	s := &http.Server{
 		Addr:           config.Address,
-		Handler:        router,
+		Handler:        tlsRouter,
 		ReadTimeout:    config.TimeoutSeconds * time.Second,
 		WriteTimeout:   config.TimeoutSeconds * time.Second,
 		MaxHeaderBytes: 1 << 20,
@@ -78,10 +83,19 @@ func getUUID(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "text/plain")
 	io.WriteString(w, uuid)
+
+	addRequest(r.RemoteAddr)
 }
 
 func getStats(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
-	io.WriteString(w, "{}")
+	io.WriteString(w, "{")
+	io.WriteString(w, fmt.Sprintf("\"TotalRequestCount\":\"%d\"", getTotalRequestCount()))
+
+	//b, _ := json.Marshal(AddressRequestCounts)
+	count, ip := getRequestCountForIP(r.RemoteAddr)
+	io.WriteString(w, fmt.Sprintf(",\"RequestCount\":{\"%s\":%d}", ip, count))
+
+	io.WriteString(w, "}")
 }
