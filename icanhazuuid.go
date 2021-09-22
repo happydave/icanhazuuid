@@ -20,14 +20,14 @@ func main() {
 
 	listenIP := flag.String("ip", "", "https listen ip")
 	listenPort := flag.Uint("port", 443, "https listen port")
-	certOpt := flag.String("cert", "/etc/icanhazuuid/cert.pem", "TLS Certificate")
-	keyOpt := flag.String("key", "/etc/icanhazuuid/key.pem", "TLS Key")
-	timeoutSecondsOpt := flag.Uint("timeout", 30, "Web server timeout in seconds")
-	logVerboseOpt := flag.Bool("v", false, "Verbose logging")
-	versionOpt := flag.Bool("version", false, "Show version and exit")
+	cert := flag.String("cert", "/etc/icanhazuuid/cert.pem", "TLS Certificate")
+	key := flag.String("key", "/etc/icanhazuuid/key.pem", "TLS Key")
+	timeoutSeconds := flag.Uint("timeout", 30, "Web server timeout in seconds")
+	logVerbose := flag.Bool("v", false, "Verbose logging")
+	versionOnly := flag.Bool("version", false, "Show version and exit")
 	flag.Parse()
 
-	if *versionOpt {
+	if *versionOnly {
 		log.Printf("Version: %s (%s) built with %s", version, build, runtime.Version())
 		os.Exit(0)
 	}
@@ -35,11 +35,11 @@ func main() {
 	addr := fmt.Sprintf("%s:%d", *listenIP, *listenPort)
 
 	webConfig := &server.WebConfig{
-		Verbose:        *logVerboseOpt,
+		Verbose:        *logVerbose,
 		Address:        addr,
-		TLSCert:        *certOpt,
-		TLSKey:         *keyOpt,
-		TimeoutSeconds: time.Duration(*timeoutSecondsOpt),
+		TLSCert:        *cert,
+		TLSKey:         *key,
+		TimeoutSeconds: time.Duration(*timeoutSeconds),
 	}
 
 	server.Launch(*webConfig)
