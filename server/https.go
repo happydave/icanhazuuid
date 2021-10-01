@@ -5,10 +5,10 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"os/exec"
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/happydave/icanhazuuid/uuid"
 )
 
 func Launch(config WebConfig) {
@@ -65,13 +65,12 @@ func logVerboseMiddleware(next http.Handler) http.Handler {
 }
 
 func getUUID(w http.ResponseWriter, r *http.Request) {
-	// generate UUID
-	rawUUID, err := exec.Command("uuidgen").Output()
-	uuid := string(rawUUID[:len(rawUUID)-1]) // strip the trailing newline
+
+	uuid, err := uuid.GenerateUUID()
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		log.Println("FATAL: Failed to generate UUID")
+		log.Printf("FATAL: Failed to generate UUID (%s)", err.Error())
 		panic("Failed to generate UUID")
 	}
 
