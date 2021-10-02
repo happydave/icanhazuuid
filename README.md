@@ -1,8 +1,11 @@
 # icanhazuuid
-simple demo that returns a uuid from an https server
+simple demo that returns a uuid
 
+
+Usage:
 https://icanhazuuid.com
 curl icanhazuuid.com
 
-usage statistics:
+
+Statistics:
 https://icanhazuuid.com/stats
