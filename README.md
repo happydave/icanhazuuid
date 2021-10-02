@@ -2,10 +2,15 @@
 simple demo that returns a uuid
 
 
-Usage:
+## Usage:
+
 https://icanhazuuid.com
-curl icanhazuuid.com
 
+http://icanhazuuid.com
 
-Statistics:
+`curl icanhazuuid.com`
+
+## Statistics:
+
 https://icanhazuuid.com/stats
+
