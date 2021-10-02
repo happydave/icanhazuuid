@@ -66,11 +66,11 @@ func logVerboseMiddleware(next http.Handler) http.Handler {
 
 func getUUID(w http.ResponseWriter, r *http.Request) {
 
-	uuid, err := uuid.GenerateUUID()
+	uuid := uuid.Generate()
 
-	if err != nil {
+	if uuid == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		log.Printf("FATAL: Failed to generate UUID (%s)", err.Error())
+		log.Printf("FATAL: Failed to generate UUID")
 		panic("Failed to generate UUID")
 	}
 
